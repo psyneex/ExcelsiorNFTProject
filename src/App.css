@@ -1,0 +1,146 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+/* --- Root Variables & Global Styles --- */
+:root {
+  --bg-color: #111217;
+  --text-primary: #EAEAEA;
+  --royal-gold: #D4AF37;
+  --cyber-blue: #00BFFF;
+  --header-bg: rgba(22, 24, 31, 0.7);
+
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- App Layout --- */
+.appHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2.5rem;
+  
+  /* Glassmorphism Effect */
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+
+  /* Cyber-tech border */
+  border-bottom: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, var(--royal-gold), var(--cyber-blue));
+  
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--royal-gold);
+  /* Subtle royal glow */
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.headerNav {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; /* Increased gap for a luxury feel */
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 5px 0;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Underline effect for cyber-tech feel */
+.navLink::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--cyber-blue);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.navLink:hover {
+  color: var(--cyber-blue);
+  /* Cyber glow on hover */
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.7);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+
+.appMain {
+  padding: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto; /* Center the main content */
+}
+
+.connectButton {
+    /* Add custom styles here if needed */
+    /* For example, to match the cyber theme */
+}
