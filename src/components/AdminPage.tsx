@@ -1,5 +1,5 @@
 import { useAccount, useReadContract, useReadContracts } from 'wagmi';
-import { keccak256, toUtf8Bytes, getAddress } from 'ethers';
+import { keccak256, toBytes, getAddress } from 'viem';
 import type { Abi } from 'viem';
 import ExcelsiorNFT from '../contracts/ExcelsiorMembershipNFT8.json';
 import { EXCELSIOR_NFT_ADDRESS } from '../config/contracts';
@@ -10,7 +10,7 @@ import { NftCard } from './NftCard';
 
 
 // Compute OPERATOR_ROLE exactly like Solidity
-const OPERATOR_ROLE = keccak256(toUtf8Bytes("OPERATOR_ROLE"));
+const OPERATOR_ROLE = keccak256(toBytes("OPERATOR_ROLE"));
 
 const AllNftsList = () => {
   const { data: totalSupplyData, isLoading: isLoadingTotalSupply } = useReadContract({
