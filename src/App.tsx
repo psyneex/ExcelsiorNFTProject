@@ -10,7 +10,7 @@ function App() {
     <Router>
       <div>
       <header className="appHeader">
-        <h1 className="headerTitle">Excelsior Grand Resort Hotel NFT Collection</h1>
+        <h1 className="headerTitle">Excelsior Grand Resort NFT Collection</h1>
         <nav className="headerNav">
           <Link to="/" className="navLink">Home</Link>
           <Link to="/admin" className="navLink">Admin</Link>
