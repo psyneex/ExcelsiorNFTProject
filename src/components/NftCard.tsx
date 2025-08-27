@@ -24,14 +24,15 @@ const OPERATOR_ROLE =
   "0x97667070c54ef182b0f5858b034beac1b6f3089aa2d3188bb1e8929f4fa9b929"; // computed keccak256("OPERATOR_ROLE")
 const APP_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbx9Om3XMKVR0YwMV4GAT3FFjLaKGLGF1zO7V5BB_5KoM52rwf7CkULKv86mqihJBr8/exec";
-// Metadata script URL is kept for reference
-// const APP_SCRIPT_URL_Metadata = 
-//   "https://script.google.com/macros/s/AKfycbyfVdnnUoWTG1zbLM7XCDgUY2njZ23Yj3XIWZdPMZuWcVvFO6R54nCos-Hr7SP8YAo/exec";
-const ADMIN_TOKEN = "jVzQ6#6hYzQJ@Z&ChhHP";
+
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 
 export const NftCard = ({ tokenId }: NftCardProps) => {
   const { address, isConnected } = useAccount();
-  const { data: publicClient } = usePublicClient();
+  const publicClient = usePublicClient();
+  if (!publicClient) {
+    throw new Error("Failed to initialize public client");
+  }
   const [metadata, setMetadata] = useState<NftMetadata | null>(null);
   const [editedValues, setEditedValues] = useState<Record<string, string>>({});
   const [privateCode, setPrivateCode] = useState<string>("");

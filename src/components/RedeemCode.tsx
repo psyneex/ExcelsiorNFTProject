@@ -6,7 +6,7 @@ interface RedeemCodeProps {
 }
 
 const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9Om3XMKVR0YwMV4GAT3FFjLaKGLGF1zO7V5BB_5KoM52rwf7CkULKv86mqihJBr8/exec';
-const ADMIN_TOKEN = 'jVzQ6#6hYzQJ@Z&ChhHP'; // Move to .env in production
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN
 
 export function RedeemCode({ tokenId }: RedeemCodeProps) {
   const [status, setStatus] = useState<string>('');
