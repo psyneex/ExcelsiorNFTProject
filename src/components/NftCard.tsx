@@ -260,9 +260,7 @@ export const NftCard = ({ tokenId, initialMetadata }: NftCardProps) => {
   const isSuccessState = status.toLowerCase().includes('success');
   const isRevealed = codeVisible && Boolean(privateCode);
 
-  const collectionName = metadata.name?.split('#')[0]?.trim() || metadata.name || 'Excelsior NFT';
-  const chainName = 'Ethereum';
-
+ 
   const cardClassName = ['nftcard', isEditing ? 'nftcard--editing' : '', isRevealed ? 'nftcard--revealed' : '']
     .filter(Boolean)
     .join(' ');
@@ -284,17 +282,7 @@ export const NftCard = ({ tokenId, initialMetadata }: NftCardProps) => {
 
         <div className="nftcard__content">
           <header className="nftcard__header">
-            <div className="nftcard__header-left">
-              <span className="nftcard__avatar">
-                <img src={metadata.image} alt={`${collectionName} avatar`} />
-              </span>
-              <div className="nftcard__collection">
-                <span className="nftcard__collection-name">{collectionName}</span>
-                <span className="nftcard__collection-chain" aria-label={`Chain ${chainName}`}>
-                  {chainName}
-                </span>
-              </div>
-            </div>
+            
           </header>
 
           <section className="nftcard__title">
