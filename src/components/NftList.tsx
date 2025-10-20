@@ -1,71 +1,137 @@
-import { useAccount, useReadContract, useReadContracts } from 'wagmi';
-import { useState, useEffect } from 'react';
-import { abi as excelsiorNftAbi } from '../contracts/ExcelsiorMembershipNFT8.json';
+import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { usePublicClient } from 'wagmi';
 import { NftCard } from './NftCard';
-import { EXCELSIOR_NFT_ADDRESS } from '../config/contracts';
+import { COLLECTIONS, EXCELSIOR_NFT_ADDRESS } from '../config/contracts';
+import { fetchCollectionNFTs, type NFT as NFTSummary } from '../utils/nftFetcher';
+import './NftList.css';
 
-const nftContainerStyle: React.CSSProperties = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
-};
+const MAX_TOKENS_TO_DISPLAY = 48;
 
 export const NftList = () => {
-  const { address, isConnected } = useAccount();
-  const [tokenIds, setTokenIds] = useState<bigint[]>([]);
+  const { collectionId } = useParams<{ collectionId?: string }>();
+  const [memberships, setMemberships] = useState<NFTSummary[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [hasMoreTokens, setHasMoreTokens] = useState(false);
+  const publicClient = usePublicClient();
 
-  const { data: balance, isSuccess: isBalanceSuccess } = useReadContract({
-    address: EXCELSIOR_NFT_ADDRESS,
-    abi: excelsiorNftAbi,
-    functionName: 'balanceOf',
-    args: [address!],
-    query: {
-      enabled: isConnected,
-    },
-  });
+  const collection = useMemo(() => {
+    if (!collectionId) return COLLECTIONS[0];
+    return COLLECTIONS.find((item) => item.id === collectionId) ?? null;
+  }, [collectionId]);
 
-  const balanceAsNumber = isBalanceSuccess ? Number(balance) : 0;
-
-  const tokenOfOwnerByIndexContracts = Array.from({ length: balanceAsNumber }, (_, index) => ({
-    address: EXCELSIOR_NFT_ADDRESS,
-    abi: excelsiorNftAbi,
-    functionName: 'tokenOfOwnerByIndex',
-    args: [address!, index],
-  }));
-
-  const { data: ownerTokenIds, isSuccess: isTokenIdsSuccess } = useReadContracts({
-    contracts: tokenOfOwnerByIndexContracts as any,
-    query: {
-      enabled: isConnected && isBalanceSuccess && balanceAsNumber > 0,
-    },
-  });
+  const contractAddress = collection ? collection.address : EXCELSIOR_NFT_ADDRESS;
 
   useEffect(() => {
-    if (isTokenIdsSuccess && ownerTokenIds) {
-      const validTokenIds = ownerTokenIds
-        .filter((item) => item.status === 'success')
-        .map((item) => item.result as bigint);
-      setTokenIds(validTokenIds);
-    } else if (balanceAsNumber === 0) {
-      setTokenIds([]);
-    }
-  }, [isTokenIdsSuccess, ownerTokenIds, balanceAsNumber]);
+    if (!collection || !publicClient) return;
 
-  if (!isConnected) {
-    return <div style={{ textAlign: 'center', marginTop: '20px' }}>Please connect your wallet to see your NFTs.</div>;
+    let cancelled = false;
+    const controller = new AbortController();
+
+    const loadCollectionTokens = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const { nfts, hasMore } = await fetchCollectionNFTs(
+          publicClient,
+          contractAddress as `0x${string}`,
+          {
+            limit: MAX_TOKENS_TO_DISPLAY,
+            signal: controller.signal,
+          }
+        );
+
+        if (!cancelled) {
+          setMemberships(nfts);
+          setHasMoreTokens(hasMore);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          console.error('Failed to load collection tokens', err);
+          setError(err instanceof Error ? err.message : 'Unable to load collection tokens');
+          setMemberships([]);
+          setHasMoreTokens(false);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadCollectionTokens();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [collection, contractAddress, publicClient]);
+
+  if (!collection) {
+    return (
+      <div className="membership membership--empty">
+        <h2>Collection not found</h2>
+        <p>
+          The requested Excelsior package is unavailable. Please choose a collection from the
+          catalogue.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h2 style={{ textAlign: 'center' }}>Your NFT Memberships</h2>
-      {tokenIds.length > 0 ? (
-        <div style={nftContainerStyle}>
-          {tokenIds.map((tokenId) => (
-            <NftCard key={tokenId} tokenId={tokenId} />
-          ))}
+    <div className="membership">
+      <header className="membership__header">
+        <div>
+          <span className="membership__eyebrow">Collection</span>
+          <h1 className="membership__title">{collection.name}</h1>
+          <p className="membership__subtitle">{collection.description}</p>
         </div>
+        <div className="membership__meta">
+          <span>Contract</span>
+          <code>
+            {contractAddress.slice(0, 6)}...{contractAddress.slice(contractAddress.length - 4)}
+          </code>
+        </div>
+      </header>
+
+      {isLoading ? (
+        <div className="membership__empty">
+          <h3>Loading NFTs...</h3>
+          <p>Retrieving the latest Excelsior memberships for this collection.</p>
+        </div>
+      ) : error ? (
+        <div className="membership__empty">
+          <h3>Unable to load NFTs</h3>
+          <p>{error}</p>
+        </div>
+      ) : memberships.length > 0 ? (
+        <>
+          {hasMoreTokens && (
+            <p className="membership__hint">
+              Showing the first {MAX_TOKENS_TO_DISPLAY} NFTs. Use the dashboard for the full
+              membership list.
+            </p>
+          )}
+          <div className="membership__grid">
+            {memberships.map((membership) => (
+              <NftCard
+                key={membership.tokenIdString}
+                tokenId={membership.tokenId}
+                initialMetadata={membership.metadata}
+              />
+            ))}
+          </div>
+        </>
       ) : (
-        <p style={{ textAlign: 'center' }}>No Excelsior Hotel NFTs found in your wallet.</p>
+        <div className="membership__empty">
+          <h3>No memberships detected</h3>
+          <p>
+            We could not find any Excelsior NFTs for this wallet. Acquire a membership from the
+            collections marketplace to unlock your benefits.
+          </p>
+        </div>
       )}
     </div>
   );

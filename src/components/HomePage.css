@@ -1,0 +1,132 @@
+.homepage {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3rem);
+  padding: clamp(2rem, 5vw, 3rem) 0;
+}
+
+.homepage__hero {
+  display: flex;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 3rem);
+  border-radius: 20px;
+  background: rgba(15, 18, 26, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.homepage__hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 640px;
+}
+
+.homepage__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.homepage__heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+.homepage__lead {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+}
+
+.homepage__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.homepage__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.homepage__action--primary {
+  background: var(--color-accent);
+  color: #0d0f14;
+}
+
+.homepage__action--primary:hover {
+  transform: translateY(-1px);
+}
+
+.homepage__action--ghost {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.homepage__features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.homepage__subheading {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--color-text-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.homepage__feature-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.homepage__feature {
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: rgba(18, 22, 30, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.homepage__feature h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: var(--color-brand-primary);
+}
+
+.homepage__feature p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+@media (min-width: 720px) {
+  .homepage__feature-list {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .homepage__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

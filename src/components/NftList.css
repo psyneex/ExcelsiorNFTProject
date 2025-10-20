@@ -1,0 +1,113 @@
+.membership {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.membership__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-radius: 20px;
+  background: rgba(12, 14, 20, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: var(--shadow-md);
+}
+
+.membership__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.membership__title {
+  margin: 0;
+  font-size: var(--font-size-3xl);
+  font-family: var(--font-display);
+  color: var(--color-brand-primary);
+}
+
+.membership__subtitle {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  max-width: 60ch;
+}
+
+.membership__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.membership__meta code {
+  font-size: var(--font-size-sm);
+  letter-spacing: normal;
+  border-radius: 999px;
+  padding: var(--space-2) var(--space-3);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.membership__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.membership__hint {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.membership__empty {
+  padding: var(--space-8);
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: rgba(11, 15, 24, 0.5);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.membership__empty h3 {
+  margin-top: 0;
+  font-size: var(--font-size-xl);
+  color: var(--color-brand-primary);
+}
+
+.membership--empty {
+  text-align: center;
+  padding: var(--space-10);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 14, 24, 0.6);
+  box-shadow: var(--shadow-sm);
+}
+
+.membership--empty h2 {
+  margin-top: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  color: var(--color-brand-primary);
+}
+
+.membership--empty p {
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 960px) {
+  .membership__grid {
+    flex-direction: column;
+  }
+}

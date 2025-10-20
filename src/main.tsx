@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css';
+import './styles/tokens.css';
+import './styles/global.css';
 
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { getDefaultConfig, RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { mainnet, sepolia, bsc, bscTestnet, base, baseSepolia } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -22,10 +23,17 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
+        <RainbowKitProvider
+          theme={darkTheme({
+            accentColor: '#d4af37',
+            accentColorForeground: '#0b0d14',
+            borderRadius: 'large',
+            overlayBlur: 'small',
+          })}
+        >
           <App />
         </RainbowKitProvider>
       </QueryClientProvider>
-    </WagmiProvider>
-  </React.StrictMode>
-);
+      </WagmiProvider>
+    </React.StrictMode>
+  );
